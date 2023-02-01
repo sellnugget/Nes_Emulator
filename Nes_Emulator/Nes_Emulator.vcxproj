@@ -19,15 +19,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bus.cpp" />
     <ClCompile Include="EMU_6502.cpp" />
+    <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Documents\Lib\CImg\CImg.h" />
+    <ClInclude Include="Bus.h" />
     <ClInclude Include="EMU_6502.h" />
     <ClInclude Include="ErrorHandle.h" />
+    <ClInclude Include="Graphics.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="Renderer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\TestTreeImage.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -115,13 +123,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\naomi\Documents\Lib\glfw-3.3.8.bin.WIN64\include;C:\Users\naomi\Documents\Lib\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\naomi\Documents\Lib\glfw-3.3.8.bin.WIN64\include;C:\Users\naomi\Documents\Lib\FreeImage\Dist\x64;C:\Users\naomi\Documents\Lib\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\naomi\Documents\Lib\glfw-3.3.8.bin.WIN64\lib-vc2022;C:\Users\naomi\Documents\Lib\glew-2.1.0\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;user32.lib;gdi32.lib;shell32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\naomi\Documents\Lib\FreeImage\Dist\x64;C:\Users\naomi\Documents\Lib\glfw-3.3.8.bin.WIN64\lib-vc2022;C:\Users\naomi\Documents\Lib\glew-2.1.0\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;user32.lib;gdi32.lib;shell32.lib;FreeImaged.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -132,15 +140,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\naomi\Documents\Lib\glfw-3.3.8.bin.WIN64\include;C:\Users\naomi\Documents\Lib\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\naomi\Documents\Lib\glfw-3.3.8.bin.WIN64\include;C:\Users\naomi\Documents\Lib\FreeImage\Dist\x64;C:\Users\naomi\Documents\Lib\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\naomi\Documents\Lib\glfw-3.3.8.bin.WIN64\lib-vc2022;C:\Users\naomi\Documents\Lib\glew-2.1.0\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;user32.lib;gdi32.lib;shell32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\naomi\Documents\Lib\FreeImage\Dist\x64;C:\Users\naomi\Documents\Lib\glfw-3.3.8.bin.WIN64\lib-vc2022;C:\Users\naomi\Documents\Lib\glew-2.1.0\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;user32.lib;gdi32.lib;shell32.lib;FreeImaged.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

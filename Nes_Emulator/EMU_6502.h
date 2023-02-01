@@ -1,11 +1,15 @@
 #pragma once
 #include <iostream>
 #include <functional>
+#include "Bus.h"
+#include <thread>
 namespace Hardware {
 
 	class EMU_6502
 	{
-
+	public:
+		void Execute();
+		void StartCPU(Bus* bus);
 	private:
 		//registers
 	
@@ -38,6 +42,7 @@ namespace Hardware {
 			output += _nothingflag << 5;
 			output += _overflow << 6;
 			output += _negative << 7;
+			return output;
 		}
 		void SetUnpackedFlags(uint8_t processorstatus) {
 			_carry = processorstatus & 0b1;
@@ -57,19 +62,24 @@ namespace Hardware {
 			_negative = processorstatus;
 		}
 
-		enum OPMODE {
-			IMPLICIT, ACCUMULATOR, IMMEDIATE, ZEROPAGE, ZEROPAGE_X,
-			ZEROPAGE_Y, RELATIVE, ABSOLUTE, ABSOLUTE_X, ABSOLUTE_Y,
-			INDIRECT, INDEXED_INDIRECT, INDIRECT_INDEXED
-		};
+		
 
 
 		
 		//used for addressing modes. so instructions dont handle getting value
-		uint8_t* _tempbyte;
-		uint16_t* _tempword;
-		OPMODE _opmode;
-
+		uint8_t _tempbyte;
+		uint16_t _tempword;
+		Bus* _bus;
+		int _currentmode;
+		void WriteDataMode(uint8_t data) {
+			if (_currentmode == 1) {
+				_accumulator = data;
+			}
+			else {
+				_bus->WriteByte(_tempword, data);
+			}
+		}
+		
 		//Instructions
 
 		/*6510 Instructions by Addressing Modes
@@ -159,10 +169,27 @@ namespace Hardware {
 			_stackPointer+=2;
 			return 0;
 		}
-		uint16_t LoadWord(uint16_t address) {
-
+		uint8_t ReadByte(uint16_t address) {
+			return _bus->ReadByte(address);
+		}
+		void WriteByte(uint16_t address, uint8_t data) {
+			_bus->WriteByte(address, data);
+		}
+		uint8_t GetNextByte() {
+			uint8_t rtn = ReadByte(_programCounter);
+			_programCounter++;
+			return rtn;
+		}
+		uint16_t GetNextWord() {
+			uint16_t rtn = ReadByte(_programCounter);
+			_programCounter++;
+			rtn += ReadByte(_programCounter) << 8;
+			_programCounter++;
+			return rtn;
 		}
 		//instructions
+		void JAM();
+
 		void ADC();
 		void AND();
 		void ASL();
@@ -220,11 +247,74 @@ namespace Hardware {
 		void TXS();
 		void TYA();
 
+		enum Instruction {
+			Adc, And, Asl, Bcc, Bcs, Beq, Bit, Bmi, Bne, Bpl, Brk, Bvc, Bvs, Clc,
+			Cld, Cli, Clv, Cmp, Cpx, Cpy, Dec, Dex, Dey, Eor, Inc, Inx, Iny, Jmp,
+			Jsr, Lda, Ldx, Ldy, Lsr, Nop, Ora, Pha, Php, Pla, Plp, Rol, Ror, Rti,
+			Rts, Sbc, Sec, Sed, Sei, Sta, Stx, Sty, Tax, Tay, Tsx, Txa, Txs, Tya,/*jam is when invalid instruction is executed*/ Jam
+		};
 
-
-		
-	public:
-		void Start6502();
+		// this allows a much easier write of the instruction matrix
+		std::function<void()> _funcs[57] =
+		{
+			[this] {ADC(); },
+			[this] {AND(); },
+			[this] {ASL(); },
+			[this] {BCC(); },
+			[this] {BCS(); },
+			[this] {BEQ(); },
+			[this] {BIT(); },
+			[this] {BMI(); },
+			[this] {BNE(); },
+			[this] {BPL(); },
+			[this] {BRK(); },
+			[this] {BVC(); },
+			[this] {BVS(); },
+			[this] {CLC(); },
+			[this] {CLD(); },
+			[this] {CLI(); },
+			[this] {CLV(); },
+			[this] {CMP(); },
+			[this] {CPX(); },
+			[this] {CPY(); },
+			[this] {DEC(); },
+			[this] {DEX(); },
+			[this] {DEY(); },
+			[this] {EOR(); },
+			[this] {INC(); },
+			[this] {INX(); },
+			[this] {INY(); },
+			[this] {JMP(); },
+			[this] {JSR(); },
+			[this] {LDA(); },
+			[this] {LDX(); },
+			[this] {LDY(); },
+			[this] {LSR(); },
+			[this] {NOP(); },
+			[this] {ORA(); },
+			[this] {PHA(); },
+			[this] {PHP(); },
+			[this] {PLA(); },
+			[this] {PLP(); },
+			[this] {ROL(); },
+			[this] {ROR(); },
+			[this] {RTI(); },
+			[this] {RTS(); },
+			[this] {SBC(); },
+			[this] {SEC(); },
+			[this] {SED(); },
+			[this] {SEI(); },
+			[this] {STA(); },
+			[this] {STX(); },
+			[this] {STY(); },
+			[this] {TAX(); },
+			[this] {TAY(); },
+			[this] {TSX(); },
+			[this] {TXA(); },
+			[this] {TXS(); },
+			[this] {TYA(); },
+			[this] {JAM(); },
+		};
 	};
 }
 

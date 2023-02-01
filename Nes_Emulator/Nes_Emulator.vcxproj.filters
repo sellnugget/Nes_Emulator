@@ -13,22 +13,37 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{876d9bb7-6059-4b9e-ad7a-88289b189861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\headers">
+      <UniqueIdentifier>{1671f5a2-8712-4c84-a36a-5af4d418c8e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\src">
+      <UniqueIdentifier>{64badd07-f7b6-4239-853f-ab60258ac422}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Files">
+      <UniqueIdentifier>{59be5634-b5dc-4f6a-a130-c1db563eaf40}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EMU_6502.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Bus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Graphics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Graphics\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ErrorHandle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -38,5 +53,22 @@
     <ClInclude Include="Helper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Bus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Graphics\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Graphics\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Documents\Lib\CImg\CImg.h">
+      <Filter>Graphics\headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\TestTreeImage.png">
+      <Filter>Graphics\Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
