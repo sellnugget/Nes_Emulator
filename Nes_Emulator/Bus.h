@@ -14,16 +14,25 @@ namespace Hardware {
 		};
 	
 
+	
 
-		uint8_t* internalRam;
+
+
 		Modual* MemMap;
-		//ordered so internal ram is the first device
-		static std::function<uint8_t* (uint16_t address, Bus* bus)> OnDeviceRead[7];
-		static std::function<void (uint16_t address, uint8_t data, Bus* bus)> OnDeviceWrite[7];
+		
+	
 	public:
 		Bus();
 		void WriteByte(uint16_t address, uint8_t data);
 		uint8_t ReadByte(uint16_t address);
+
+		//devices
+		uint8_t* internalRam;
+
+		//these arguments can be overloaded so that the bus does not need a reference to other devices
+		static std::function<uint8_t(uint16_t address, Bus* bus)> OnDeviceRead[7];
+		static std::function<void(uint16_t address, uint8_t data, Bus* bus)> OnDeviceWrite[7];
+
 	};
 
 }

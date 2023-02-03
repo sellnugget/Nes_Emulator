@@ -20,18 +20,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bus.cpp" />
+    <ClCompile Include="Cartridge.cpp" />
     <ClCompile Include="EMU_6502.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PPU.cpp" />
     <ClCompile Include="Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Documents\Lib\CImg\CImg.h" />
     <ClInclude Include="Bus.h" />
+    <ClInclude Include="Cartridge.h" />
     <ClInclude Include="EMU_6502.h" />
     <ClInclude Include="ErrorHandle.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Helper.h" />
+    <ClInclude Include="PPU.h" />
     <ClInclude Include="Renderer.h" />
   </ItemGroup>
   <ItemGroup>

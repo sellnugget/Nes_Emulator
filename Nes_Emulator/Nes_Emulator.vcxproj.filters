@@ -42,6 +42,12 @@
     <ClCompile Include="Graphics.cpp">
       <Filter>Graphics\src</Filter>
     </ClCompile>
+    <ClCompile Include="Cartridge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PPU.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ErrorHandle.h">
@@ -64,6 +70,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\Documents\Lib\CImg\CImg.h">
       <Filter>Graphics\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Cartridge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PPU.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

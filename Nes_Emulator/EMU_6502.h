@@ -154,21 +154,7 @@ namespace Hardware {
 				_negative = 0;
 			}
 		}
-		void PushByte(uint8_t value) {
-			
-			_stackPointer -= 1;
-		}
-		void PushWord(uint16_t value) {
-			_stackPointer -= 2;
-		}
-		uint8_t PopByte() {
-			_stackPointer+=1;
-			return 0;
-		}
-		uint16_t PopWord() {
-			_stackPointer+=2;
-			return 0;
-		}
+		
 		uint8_t ReadByte(uint16_t address) {
 			return _bus->ReadByte(address);
 		}
@@ -187,6 +173,31 @@ namespace Hardware {
 			_programCounter++;
 			return rtn;
 		}
+		void PushByte(uint8_t value) {
+
+			WriteByte(0x0100 + _stackPointer, value);
+			_stackPointer -= 1;
+		}
+		void PushWord(uint16_t value) {
+
+			WriteByte(0x0100 + _stackPointer, value);
+			_stackPointer -= 1;
+			WriteByte(0x0100 + _stackPointer, value >> 8);
+			_stackPointer -= 1;
+		}
+		uint8_t PopByte() {
+			_stackPointer += 1;
+			return ReadByte(0x0100 + _stackPointer);
+		}
+		uint16_t PopWord() {
+			uint16_t rtn = PopByte() << 8;
+			rtn += PopByte();
+			return rtn;
+		}
+
+
+
+
 		//instructions
 		void JAM();
 

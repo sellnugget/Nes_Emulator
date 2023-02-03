@@ -136,11 +136,12 @@ namespace Hardware {
 			_currentmode = OpMatrix[current];
 			mode_lambdas[OpMatrix[current]]();
 			_funcs[instructionMatrix[current]]();
-			std::cout <<"PC:" << _programCounter << " Accumulator:" << _accumulator << " IndexX : " << _indexX << " IndexY : " << _indexY << "\n";
+			//std::cout <<"PC:" << _programCounter << " Accumulator:" << _accumulator << " IndexX : " << _indexX << " IndexY : " << _indexY << "\n";
 		}
 	}
 	void EMU_6502::StartCPU(Bus* bus)
 	{
+		_bus = bus;
 		std::thread CpuThread(&EMU_6502::Execute, this);
 		CpuThread.join();
 	}
@@ -494,20 +495,17 @@ namespace Hardware {
 
 	void EMU_6502::STA()
 	{
-		_tempbyte = _accumulator;
-		WriteByte(_tempword, _tempbyte);
+		WriteByte(_tempword, _accumulator);
 	}
 
 	void EMU_6502::STX()
 	{
-		_tempbyte = _indexX;
-		WriteByte(_tempword, _tempbyte);
+		WriteByte(_tempword, _indexX);
 	}
 
 	void EMU_6502::STY()
 	{
-		_tempbyte = _indexY;
-		WriteByte(_tempword, _tempbyte);
+		WriteByte(_tempword, _indexY);
 	}
 
 	void EMU_6502::TAX()
