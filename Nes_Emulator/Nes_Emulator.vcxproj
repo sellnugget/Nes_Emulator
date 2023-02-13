@@ -25,6 +25,7 @@
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PPU.cpp" />
+    <ClCompile Include="RamModual.cpp" />
     <ClCompile Include="Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -36,6 +37,7 @@
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="PPU.h" />
+    <ClInclude Include="RamModual.h" />
     <ClInclude Include="Renderer.h" />
   </ItemGroup>
   <ItemGroup>

@@ -1,90 +1,70 @@
 #include "Bus.h"
-
+#include <iomanip>
 namespace Hardware {
+    void Bus::MapRegion(std::string tocall, uint16_t location, uint16_t size)
+    {
+        if ((int)location + (int)size > 0x10000) {
+            Error::Error(Error::IncorrectMap);
+        }
+        if (!_slots.count(tocall)) {
+            //this is when a unbinded function is used
+            Error::Error(Error::IncorrectMap);
+        }
+        for (int i = location; i < location + size; i++) {
+            _MemMap[i] = _slots[tocall];
+        }
+    }
 
+    void Bus::BindDevice(std::string name) {
+        _slots[name] = _currentnewslot;
+        _slotnames[_currentnewslot] = name;
+        _currentnewslot++;
+    }
+
+    void Bus::BindReadDevice(std::string name, std::function<uint8_t(uint16_t address)> function)
+    {
+        OnDeviceRead[_slots[name]] = function;
+    }
+
+    void Bus::BindWriteDevice(std::string name, std::function<void(uint16_t address, uint8_t data)> function) {
+        OnDeviceWrite[_slots[name]] = function;
+    }
     Bus::Bus()
     {
-        MemMap = new Modual[0xffff];
-        internalRam = new uint8_t[0x800];
-
-        //sets all device locations 
-        uint16_t i = 0;
-        for (; i < 0x0800; i++) {
-            MemMap[i] = INTERNAL_RAM;
+        _MemMap = new uint8_t[0xffff];
+        for (int i = 0; i < 255; i++) {
+            OnDeviceRead[i] = [](uint16_t address) {return 0; };
+            OnDeviceWrite[i] = [](uint16_t address, uint8_t data) { };
         }
-        for (; i < 0x2000; i++) {
-            MemMap[i] = MIRROR_RAM;
-        }
-        for (; i < 0x2008; i++) {
-            MemMap[i] = PPU_REGISTER;
-        }
-        for (; i < 0x4000; i++) {
-            MemMap[i] = PPU_REGISTER_MIRROR;
-        }
-        for (; i < 0x4018; i++) {
-            MemMap[i] = APU_IO_REGISTERS;
-        }
-        for (; i < 0x4020; i++) {
-            MemMap[i] = DISABLED_APU_IO;
-        }
-        for (; i != 0; i++) {
-            MemMap[i] = CARTRIDGE_SPACE;
-        }
-
-        //initializes memory to zero
-
-        for (i = 0; i < 0x800; i++) {
-            internalRam[i] = 0;
-        }
-
-
-
 
     }
-    void Bus::WriteByte(uint16_t address, uint8_t data)
+    void Bus::WriteByte(uint16_t address, uint8_t data, bool print)
     {
-        OnDeviceWrite[MemMap[address]](address, data, this);
+        if (print) {
+            std::cout << "0x";
+            if (address < 0x1000) {
+                std::cout << "0";
+                if (address < 0x100) {
+                    std::cout << "0";
+                }
+            }
+            std::cout << std::hex << address << " w from device:" << _slotnames[_MemMap[address]] << "\n";
+        }
+        OnDeviceWrite[_MemMap[address]](address, data);
     }
-    uint8_t Bus::ReadByte(uint16_t address)
+    uint8_t Bus::ReadByte(uint16_t address, bool print)
     {
-        return OnDeviceRead[MemMap[address]](address, this);
+        if (print) {
+            std::cout << "0x";
+            if (address < 0x1000) {
+                std::cout << "0";
+                if (address < 0x100) {
+                    std::cout << "0";
+                }
+            }
+            std::cout << std::hex << address << " r from device:" << _slotnames[_MemMap[address]] << "\n";
+        } 
+        return OnDeviceRead[_MemMap[address]](address);
     }
-    std::function <uint8_t (uint16_t address, Bus* bus)> Bus::OnDeviceRead[7] =
-    {
-        [](uint16_t address, Bus* bus) {return bus->internalRam[address]; },
-        [](uint16_t address, Bus* bus) { return bus->internalRam[address % 0x800]; },
-        //nes ppu registers
-        [](uint16_t address, Bus* bus) { return 0; },
-        //mirror of $2000-$2007
-        [](uint16_t address, Bus* bus) { return 0; },
-        //NES APU and I/O registers
-        [](uint16_t address, Bus* bus) { return 0; },
-        // 	APU and I/O functionality that is normally disabled
-        [](uint16_t address, Bus* bus) { return 0; },
-        //Cartridge space: PRG ROM, PRG RAM, and mapper registers
-        [](uint16_t address, Bus* bus) { return 0; },
-
-
-
-    };
-
-    std::function <void (uint16_t address, uint8_t data, Bus* bus)> Bus::OnDeviceWrite[7] =
-    {
-        [](uint16_t address, uint8_t data, Bus* bus) {bus->internalRam[address] = data; },
-        [](uint16_t address, uint8_t data, Bus* bus) { bus->internalRam[address % 0x800] = data; },
-        //nes ppu registers
-        [](uint16_t address, uint8_t data, Bus* bus) { std::cout << (char)data; },
-        //mirror of $2000-$2007
-        [](uint16_t address, uint8_t data, Bus* bus) { ; },
-        //NES APU and I/O registers
-        [](uint16_t address, uint8_t data, Bus* bus) { ; },
-        // 	APU and I/O functionality that is normally disabled
-        [](uint16_t address, uint8_t data, Bus* bus) { ; },
-        //Cartridge space: PRG ROM, PRG RAM, and mapper registers
-        [](uint16_t address, uint8_t data, Bus* bus) {  },
-
-
-
-    };
 
 }

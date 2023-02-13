@@ -24,9 +24,10 @@ namespace Graphics {
 	public:
 		void Resize(int x, int y);
 		Renderer();
-		void StartPPU();
+		void UpdateGL(int update);
 		void DrawObject(std::string texture, float x, float y, float width = 1, float height = 1);
 		void AddImage(std::string name,Image* image);
+		GLFWwindow* _window;
 	private:
 		int WindowX = 256;
 		int WindowY = 240;
@@ -35,9 +36,7 @@ namespace Graphics {
 		std::vector<Image*> _imagedat;
 		int _current;
 		std::vector<RenderObject> _renderobjects;
-
 		GLuint* _texid;
-		GLFWwindow* _window;
 	};
 
 

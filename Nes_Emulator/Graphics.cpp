@@ -8,20 +8,35 @@ namespace Graphics {
 		Height = FreeImage_GetHeight(sourceBitmap1);
 
 		FreeImage_ConvertToFloat(sourceBitmap1);
-		data = new float[Width * Height * 3];
+		data = new Vector3[Width * Height];
 
 		for (int i = 0; i < Height * Width; i++) {
 			int x = i % Width;
 			int y = i / Width;
 			RGBQUAD pixel;
 			FreeImage_GetPixelColor(sourceBitmap1, x, y, &pixel);
-			data[i * 3] = pixel.rgbRed / 255.0f;
-			data[i * 3 + 1] = pixel.rgbGreen / 255.0f;
-			data[i * 3 + 2] = pixel.rgbBlue / 255.0f;
+			data[i].r = pixel.rgbRed / 255.0f;
+			data[i].g = pixel.rgbGreen / 255.0f;
+			data[i].b = pixel.rgbBlue / 255.0f;
 		}
 		
 
 		
+	}
+
+	void Image::Create(int width, int height)
+	{
+		Width = width;
+		Height = height;
+		data = new Vector3[width * height];
+	}
+
+	void Image::WritePixel(int x, int y, Vector3 Color)
+	{
+		if (y > Height || x > Width) {
+			return;
+		}
+		data[Width * y + x] = Color;
 	}
 
 }
